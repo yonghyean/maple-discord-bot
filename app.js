@@ -5,6 +5,7 @@ const hunting = require("./hunting.json");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const nodeHtmlToImage = require('node-html-to-image')
+const iconv = require("iconv-lite");
 
 const maple_gg_user = 'https://maple.gg/u/';
 const getHtml = async (url) => {
@@ -42,9 +43,11 @@ client.on('message', async (msg) => {
       `);
         return;
       }
-      const html = await getHtml(maple_gg_user + encodeURI(info));
-      const $ = cheerio.load(html.data, { decodeEntities: false }); 
-        const h3 = $("section.container > h3");
+      const data = await getHtml(maple_gg_user + encodeURI(info));
+      const strContents = new Buffer(data.data);
+      const html = iconv.decode(strContents, 'utf-8').toString();
+      const $ = cheerio.load(html, { decodeEntities: false });
+      const h3 = $("section.container > h3");
         if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
           msg.reply(`
           > 검색결과가 없습니다.
