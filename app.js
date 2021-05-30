@@ -10,7 +10,11 @@ const iconv = require("iconv-lite");
 const maple_gg_user = 'https://maple.gg/u/';
 const getHtml = async (url) => {
   try {
-    return await axios.get(url);
+    return await axios.get(url, {
+        responseEncoding : 'binary',
+        responseType : 'arraybuffer'
+      }
+    );
   } catch (error) {
     console.error(error);
   }
@@ -44,9 +48,8 @@ client.on('message', async (msg) => {
         return;
       }
       const data = await getHtml(maple_gg_user + encodeURI(info));
-      const strContents = new Buffer(data.data);
-      const html = iconv.decode(strContents, 'utf-8').toString();
-      const $ = cheerio.load(html, { decodeEntities: false });
+      const html = iconv.decode(data.data, 'EUC-KR');
+      const $ = cheerio.load(html, {decodeEntities: true});
       const h3 = $("section.container > h3");
         if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
           msg.reply(`
