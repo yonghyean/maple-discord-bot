@@ -54,13 +54,7 @@ client.on('message', async (msg) => {
           const characterCardHtml = $('#character-card').html();
           const image = await nodeHtmlToImage({
             html: characterCardHtml,
-            puppeteerArgs: { args: [ 
-              "--no-sandbox" , 
-              "--disable-setuid-sandbox" , 
-              "--headless" , 
-              "--disable-gpu" , 
-              "--disable-dev-shm -usage " , 
-          ]},
+            puppeteerArgs: {executablePath: "chromium-browser", args: ["--no-sandbox", "--disable-setuid-sandbox"]},
           });
           const discordSendImage = new Discord.MessageAttachment(image);
           msg.channel.send(discordSendImage);
