@@ -53,7 +53,8 @@ client.on('message', async (msg) => {
           // TODO 캐릭터 정보 꾸미기
           const characterCardHtml = $('#character-card').html();
           const image = await nodeHtmlToImage({
-            html: characterCardHtml
+            html: characterCardHtml,
+            puppeteerArgs: { args: ['--no-sandbox']},
           });
           const discordSendImage = new Discord.MessageAttachment(image);
           msg.channel.send(discordSendImage);
