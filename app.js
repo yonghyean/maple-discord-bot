@@ -43,7 +43,7 @@ client.on('message', async (msg) => {
         return;
       }
       const html = await getHtml(maple_gg_user + encodeURI(info));
-      const $ = cheerio.load(html.data); 
+      const $ = cheerio.load(html.data, { decodeEntities: false }); 
         const h3 = $("section.container > h3");
         if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
           msg.reply(`
