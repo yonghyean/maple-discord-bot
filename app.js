@@ -5,7 +5,6 @@ const hunting = require("./hunting.json");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const nodeHtmlToImage = require('node-html-to-image')
-const iconv = require("iconv-lite");
 
 const maple_gg_user = 'https://maple.gg/u/';
 const getHtml = async (url) => {
@@ -48,8 +47,7 @@ client.on('message', async (msg) => {
         return;
       }
       const data = await getHtml(maple_gg_user + encodeURI(info));
-      const html = iconv.decode(data.data, 'EUC-KR');
-      const $ = cheerio.load(html, {decodeEntities: true});
+      const $ = cheerio.load(data.data, {decodeEntities: true});
       const h3 = $("section.container > h3");
         if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
           msg.reply(`
