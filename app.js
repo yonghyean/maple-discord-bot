@@ -72,10 +72,12 @@ client.on('message', async (msg) => {
         visible: true,
       });
       const elem = await page.$('#character-card');
+      const bounding_box = await example.boundingBox();
       const base64Image = await elem.screenshot({
         encoding: 'base64',
         clip: {
           y: 0,
+          x: bounding_box.x,
         }
       });
       const buffer = await Buffer.from(base64Image, 'base64');
