@@ -19,17 +19,6 @@ const getHtml = async (url) => {
   }
 };
 
-let browser = null;
-let page = null;
-(async () => {
-  browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    executablePath: "chromium-browser"
-  });
-  page = await browser.newPage();
-})();
-
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -57,7 +46,13 @@ client.on('message', async (msg) => {
       `);
         return;
       }
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        executablePath: "chromium-browser"
 
+      });       // run browser
+      const page = await browser.newPage();           // open new tab
       await page.goto(maple_gg_user + encodeURI(info));          // go to site
       await page.waitForSelector('button[data-target="#exampleModal"]', {
         visible: true,
@@ -67,19 +62,15 @@ client.on('message', async (msg) => {
         msg.reply('> 검색결과가 없습니다.');
         return;
       }
-      await page.click('button[data-target="#exampleModal"]');
+      await profileImageSaveButton.click();
       await page.waitForSelector('#character-card',{
         visible: true,
       });
       const elem = await page.$('#character-card');
-      const bounding_box = await example.boundingBox();
       const base64Image = await elem.screenshot({
         encoding: 'base64',
-        clip: {
-          y: 0,
-          x: bounding_box.x,
-        }
       });
+      await browser.close();
       const buffer = await Buffer.from(base64Image, 'base64');
       const discordSendImage = new Discord.MessageAttachment(buffer);
       msg.channel.send(discordSendImage);
