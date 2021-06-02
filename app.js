@@ -75,7 +75,8 @@ client.on('message', async (msg) => {
       const base64Image = await elem.screenshot({
         encoding: 'base64',
       });
-      const discordSendImage = new Discord.MessageAttachment(base64Image);
+      const buffer = await Buffer.from(base64Image, 'base64');
+      const discordSendImage = new Discord.MessageAttachment(buffer);
       msg.channel.send(discordSendImage);
       break; 
     case "사냥터": {
