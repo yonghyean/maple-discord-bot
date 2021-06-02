@@ -74,6 +74,9 @@ client.on('message', async (msg) => {
       const elem = await page.$('#character-card');
       const base64Image = await elem.screenshot({
         encoding: 'base64',
+        clip: {
+          y: 0,
+        }
       });
       const buffer = await Buffer.from(base64Image, 'base64');
       const discordSendImage = new Discord.MessageAttachment(buffer);
