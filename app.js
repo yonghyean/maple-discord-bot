@@ -60,9 +60,11 @@ client.on('message', async (msg) => {
       const profileImageSaveButton = await page.$('button[data-target="#exampleModal"]');
       if (!profileImageSaveButton) {
         msg.reply('> 검색결과가 없습니다.');
+        await browser.close();
         return;
       }
       await profileImageSaveButton.click();
+      await page.waitForTimeout(1*1000);
       await page.waitForSelector('#character-card',{
         visible: true,
       });
