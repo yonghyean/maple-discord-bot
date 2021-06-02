@@ -19,12 +19,16 @@ const getHtml = async (url) => {
   }
 };
 
-const browser = await puppeteer.launch({
-  headless: true,
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  executablePath: "chromium-browser"
-});
-const page = await browser.newPage();
+let browser = null;
+let page = null;
+(async () => {
+  browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    executablePath: "chromium-browser"
+  });
+  page = await browser.newPage();
+})();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
