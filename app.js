@@ -4,7 +4,7 @@ const data = require("./data.json");
 const hunting = require("./hunting.json");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const nodeHtmlToImage = require('node-html-to-image')
+const puppeteer = require("puppeteer");
 
 const maple_gg_user = 'https://maple.gg/u/';
 const getHtml = async (url) => {
@@ -46,23 +46,36 @@ client.on('message', async (msg) => {
       `);
         return;
       }
-      const data = await getHtml(maple_gg_user + encodeURI(info));
-      const $ = cheerio.load(data.data, {decodeEntities: true});
-      const h3 = $("section.container > h3");
-        if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
-          msg.reply(`
-          > 검색결과가 없습니다.
-          `);
-        } else {
-          // TODO 캐릭터 정보 꾸미기
-          const characterCardHtml = $('#character-card').html();
-          const image = await nodeHtmlToImage({
-            html: characterCardHtml,
-            puppeteerArgs: {executablePath: "chromium-browser", args: ["--no-sandbox", "--disable-setuid-sandbox"]},
-          });
-          const discordSendImage = new Discord.MessageAttachment(image);
-          msg.channel.send(discordSendImage);
-        }
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        executablePath: "chromium-browser"
+
+      });       // run browser
+      const page = await browser.newPage();           // open new tab
+      await page.goto(maple_gg_user + encodeURI(info));          // go to site
+      await page.waitForSelector('button[data-target="#exampleModal"]', {
+        visible: true,
+      });
+      const profileImageSaveButton = await page.$('button[data-target="#exampleModal"]');
+      if (!profileImageSaveButton) {
+        msg.reply('> 검색결과가 없습니다.');
+        await browser.close();
+        return;
+      }
+      await profileImageSaveButton.click();
+      await page.waitForTimeout(1*1000);
+      await page.waitForSelector('#character-card',{
+        visible: true,
+      });
+      const elem = await page.$('#character-card');
+      const base64Image = await elem.screenshot({
+        encoding: 'base64',
+      });
+      await browser.close();
+      const buffer = await Buffer.from(base64Image, 'base64');
+      const discordSendImage = new Discord.MessageAttachment(buffer);
+      msg.channel.send(discordSendImage);
       break; 
     case "사냥터": {
       const huntingData = hunting.data;
