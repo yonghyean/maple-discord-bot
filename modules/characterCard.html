@@ -1,0 +1,170 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <style>
+      body {
+        max-width: 304px;
+        max-height: 443px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <svg width="304" height="443"
+  xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text {
+     font-family: 'Noto Sans Korean', Malgun Gothic; 
+    }
+  </style>
+  <image href="https://maple.gg/images/images/bg-character-card@3x.png" width="304" height="443"/>
+    <image 
+      href="{{characterImage}}" 
+      width="168" 
+      height="168"
+      x="65"
+      y="50"
+    />
+    <text 
+      x="50%" 
+      y="55%" 
+      font-weight="bold"
+      dominant-baseline="middle" text-anchor="middle"
+      fill="#fff" font-size="24">
+      {{name}}
+    </text>
+    
+    <g transform="translate(152, 270)">
+      <text
+        id="test" 
+        fill="#fff" 
+        font-weight="400"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="14">
+        {{world}}
+        <tspan dx="3" font-size="8" dy="-2">|</tspan>
+        <tspan dx="3" dy="1">Lv.{{level}}</tspan>
+        <tspan dx="3" font-size="8" dy="0">|</tspan>
+        <tspan dx="3" dy="1">{{jobs}}</tspan>
+      </text>
+      <text 
+        dy="20"
+        fill="#ffe3bd" 
+        font-weight="400"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="12">
+        인기도
+        <tspan fill="#cdad80">{{popularity}}</tspan>
+        <tspan>길드</tspan>
+        <tspan fill="#cdad80">{{guild}}</tspan>
+      </text>
+      <text 
+      dy="40"
+      fill="#ffe3bd" 
+      font-weight="400"
+      dominant-baseline="middle" text-anchor="middle"
+      font-size="12">
+      직업랭킹
+        <tspan fill="#cdad80">{{worldRanking}}</tspan>
+        <tspan fill="#cdad80">{{allRanking}}</tspan>
+      </text>
+      <image 
+        href="https://kr-cdn.maple.gg/images/images/card-effect@3x.png" 
+        width="68" 
+        height="11"
+        x="-33"
+        y="60"
+      />
+      <g transform="translate(-90, 100)">
+        <text 
+          fill="#ffe3bd" 
+          font-weight="bold"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="13"
+        >
+          무릉도장
+        </text>
+        <text 
+          y="18"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="13"
+        >
+        <tspan fill="#cdad80">
+          <tspan font-size="11" dx="-1">
+          최고
+          </tspan>
+          {{maxMuLung}}
+        </tspan>
+        </text>
+        <text 
+          y="35"
+          fill="#cdad80"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="11"
+        >
+        {{muLungTime}}
+        </text>
+      </g>
+      <g transform="translate(0, 100)">
+        <text 
+          fill="#ffe3bd" 
+          font-weight="bold"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="13"
+        >
+          유니온
+        </text>
+        <text 
+          y="18"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="13"
+        >
+        <tspan fill="#cdad80">
+          {{union}}
+        </tspan>
+        </text>
+        <text 
+          y="35"
+          fill="#cdad80"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="11"
+        >
+        Lv.{{unionLevel}}
+        </text>
+      </g>
+      <g transform="translate(90, 100)">
+        <text 
+          fill="#ffe3bd" 
+          font-weight="bold"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="13"
+        >
+          더시드
+        </text>
+        <text 
+          y="18"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="13"
+        >
+        <tspan fill="#cdad80">
+          <tspan font-size="11" dx="-1">
+          최고
+          </tspan>
+          {{maxTheSeed}}
+        </tspan>
+        </text>
+        <text 
+          y="35"
+          fill="#cdad80"
+          dominant-baseline="middle" text-anchor="middle"
+          font-size="11"
+        >
+        {{theSeedTime}}
+        </text>
+      </g>
+    </g>
+  </svg>
+  </body>
+</html>

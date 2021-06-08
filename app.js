@@ -1,10 +1,13 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const data = require("./data.json");
-const hunting = require("./hunting.json");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const nodeHtmlToImage = require('node-html-to-image')
+
+const hunting = require("./hunting.json");
+const data = require("./data.json");
+const {getUserInfo, createCharacterCard} = require("./modules/getUserInfo");
+
 
 const maple_gg_user = 'https://maple.gg/u/';
 const getHtml = async (url) => {
@@ -37,32 +40,44 @@ client.on('message', async (msg) => {
         { name: "!정보 (캐릭터 이름)", value: "캐릭터 정보를 알려줍니다.", inline: false},
         { name: "!사냥터", value: "사냥터 정보를 알려줍니다.", inline: false},
       ]
+      embed.setImage("./tempCharacterCard.svg")
       msg.channel.send(embed);
       break;
     case '정보':
       if (!info) {
         msg.channel.send(`
-        > 닉네임을 입력해주세요.
-      `);
+         > 닉네임을 입력해주세요.
+        `);
         return;
       }
       const data = await getHtml(maple_gg_user + encodeURI(info));
       const $ = cheerio.load(data.data, {decodeEntities: true});
-      const h3 = $("section.container > h3");
-        if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
-          msg.reply(`
-          > 검색결과가 없습니다.
-          `);
-        } else {
-          // TODO 캐릭터 정보 꾸미기
-          const characterCardHtml = $('#character-card').html();
-          const image = await nodeHtmlToImage({
-            html: characterCardHtml,
-            puppeteerArgs: {executablePath: "chromium-browser", args: ["--no-sandbox", "--disable-setuid-sandbox"]},
-          });
-          const discordSendImage = new Discord.MessageAttachment(image);
-          msg.channel.send(discordSendImage);
-        }
+      const userInfo = getUserInfo($, info);
+      if (!userInfo) {
+        msg.channel.send(`
+         > 검색결과가 없습니다.
+        `);
+      }
+      try {
+        const html = await createCharacterCard(userInfo);
+        const image = await nodeHtmlToImage({
+          html,
+          quality: 100,
+          type: 'jpeg',
+          encoding: 'buffer',
+          puppeteerArgs: {
+          executablePath: "chromium-browser", 
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+          }
+        });
+        const discordSendImage = new Discord.MessageAttachment(image);
+        msg.channel.send(discordSendImage);
+      } catch(e) {
+        console.log(e)
+        msg.channel.send(`
+         > 정보를 불러오는데 실패했습니다.
+        `);
+      }
       break; 
     case "사냥터": {
       const huntingData = hunting.data;

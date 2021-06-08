@@ -1,0 +1,154 @@
+<svg width="304" height="443"
+  xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text {
+     font-family: 'Noto Sans Korean', Malgun Gothic; 
+    }
+  </style>
+  <image href="https://maple.gg/images/images/bg-character-card@3x.png" width="304" height="443"/>
+  <image 
+    href="https://avatar.maplestory.nexon.com/Character/KPOJCOLCHKDCBAPBAOAABKLAAMCCMEAFAMNOAKAABMKBDKHBFMKECKPJBLEGLBEEKFDOCDODHBHGLEDMCNOEOHIIBDCNLLNDKNPNADAGLPHDHKOPPPBFCDAFFOGGJMNPMOMBIGCONEBBFHAPFFFEFJIKLANMLHIEKPOLEFJALEFBDJIBIBIDHHABDNMONENCOPBHDJFAJOCNENLOPLIKNBJFNOEJKCJPFDBJEBPJBPACDLNHMILPAILEKMCDAAEF.png" 
+    width="168" 
+    height="168"
+    x="65"
+    y="50"
+  />
+  <text 
+    x="50%" 
+    y="55%" 
+    font-weight="bold"
+    dominant-baseline="middle" text-anchor="middle"
+    fill="#fff" font-size="24">
+    이세계넷카마
+  </text>
+  
+  <g transform="translate(152, 270)">
+    <text
+      id="test" 
+      fill="#fff" 
+      font-weight="400"
+      dominant-baseline="middle" text-anchor="middle"
+      font-size="14">
+      리부트
+      <tspan dx="3" font-size="8" dy="-2">|</tspan>
+      <tspan dx="3" dy="1">Lv.243</tspan>
+      <tspan dx="3" font-size="8" dy="0">|</tspan>
+      <tspan dx="3" dy="1">섀도어</tspan>
+    </text>
+    <text 
+      dy="20"
+      fill="#ffe3bd" 
+      font-weight="400"
+      dominant-baseline="middle" text-anchor="middle"
+      font-size="12">
+      인기도
+      <tspan fill="#cdad80"> 10</tspan>
+      <tspan>길드</tspan>
+      <tspan fill="#cdad80">(없음)</tspan>
+    </text>
+    <text 
+    dy="40"
+    fill="#ffe3bd" 
+    font-weight="400"
+    dominant-baseline="middle" text-anchor="middle"
+    font-size="12">
+    직업랭킹
+      <tspan fill="#cdad80">월드 907위</tspan>
+      <tspan fill="#cdad80">(전체 1,089위)</tspan>
+    </text>
+    <image 
+      href="https://kr-cdn.maple.gg/images/images/card-effect@3x.png" 
+      width="68" 
+      height="11"
+      x="-33"
+      y="60"
+    />
+    <g transform="translate(-90, 100)">
+      <text 
+        fill="#ffe3bd" 
+        font-weight="bold"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="13"
+      >
+        무릉도장
+      </text>
+      <text 
+        y="18"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="13"
+      >
+      <tspan fill="#cdad80">
+        <tspan font-size="11" dx="-1">
+        최고
+        </tspan>
+        47층
+      </tspan>
+      </text>
+      <text 
+        y="35"
+        fill="#cdad80"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="11"
+      >
+      12분 52초
+      </text>
+    </g>
+    <g transform="translate(0, 100)">
+      <text 
+        fill="#ffe3bd" 
+        font-weight="bold"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="13"
+      >
+        유니온
+      </text>
+      <text 
+        y="18"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="13"
+      >
+      <tspan fill="#cdad80">
+        마스터 II
+      </tspan>
+      </text>
+      <text 
+        y="35"
+        fill="#cdad80"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="11"
+      >
+      Lv.6231
+      </text>
+    </g>
+    <g transform="translate(90, 100)">
+      <text 
+        fill="#ffe3bd" 
+        font-weight="bold"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="13"
+      >
+        더시드
+      </text>
+      <text 
+        y="18"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="13"
+      >
+      <tspan fill="#cdad80">
+        <tspan font-size="11" dx="-1">
+        최고
+        </tspan>
+        11층
+      </tspan>
+      </text>
+      <text 
+        y="35"
+        fill="#cdad80"
+        dominant-baseline="middle" text-anchor="middle"
+        font-size="11"
+      >
+      11분 46초
+      </text>
+    </g>
+  </g>
+</svg>
