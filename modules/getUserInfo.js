@@ -45,7 +45,7 @@ const getUserInfo = ($, name) => {
     maxMuLung,
     muLungTime,
     union,
-    unionLevel: unionLevel.slice(3),
+    unionLevel,
     maxTheSeed,
     theSeedTime,
   }
@@ -57,6 +57,10 @@ const createCharacterCard = (userInfo) => {
       if (err) rej(err);
       let html = data;
       for (let key in userInfo) {
+        if (key === 'allRanking' && userInfo[key] === undefined) {
+          html = html.replace(`{{${key}}}`, '(없음)');
+          continue;
+        }
         html = html.replace(`{{${key}}}`, userInfo[key]);
       }
       res(html);
