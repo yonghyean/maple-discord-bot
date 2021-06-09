@@ -5,7 +5,9 @@ const { Cluster } = require("puppeteer-cluster");
 const {
   help,
   info,
-  hunting
+  hunting,
+  news,
+  eventAndCash
 } = require("./messages");
 
 const secret = require("./data.json");
@@ -23,15 +25,15 @@ const puppeteerOptions = process.platform === 'win32' ? undefined : {
   });
 
   await cluster.task(async ({ page, data: html, worker }) => {
-    console.time("setContent:" + worker.id);
+    console.time("screenshot" + worker.id);
     await page.setContent(html);
-    console.timeEnd("setContent:" + worker.id);
     const body = await page.$("body");
     const screen = await body.screenshot({
       quality: 100,
       type: 'jpeg',
       encoding: 'buffer',
     });
+    console.timeEnd("screenshot" + worker.id);
     return screen;
   });
 
@@ -54,6 +56,22 @@ const puppeteerOptions = process.platform === 'win32' ? undefined : {
         hunting(msg);
         break;
       }
+      case "공지": {
+        const type = data === '공지' ? 'Notice' : data === '점검' ? 'Inspection' : data === 'GM' ? 'GMDiary' : 'All';
+        await news.news(msg, type);
+        break;
+      }
+      case "업데이트": {
+        await news.update(msg);
+        break;
+      }
+      case "이벤트": 
+      case "캐시": {
+        const type = message === '이벤트' ? 'Event' : 'CashShop'; 
+        await eventAndCash(msg, type);
+        break;
+      }
+      
     }
   });
   

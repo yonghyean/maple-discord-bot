@@ -8,6 +8,9 @@ const help = (msg) => {
     { name: "!도움말/!help", value: "도움말을 알려줍니다.", inline: false},
     { name: "!정보 (캐릭터 이름)", value: "캐릭터 정보를 알려줍니다.", inline: false},
     { name: "!사냥터", value: "사냥터 정보를 알려줍니다.", inline: false},
+    { name: "!공지", value: "공지사항을 알려줍니다.", inline: false},
+    { name: "!업데이트", value: "업데이트를 알려줍니다.", inline: false},
+    { name: "!이벤트/!캐시", value: "이벤트와 캐시샵 공지를 알려줍니다.", inline: false},
   ]
   msg.channel.send(embed);
 }

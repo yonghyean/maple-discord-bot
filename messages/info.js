@@ -1,21 +1,10 @@
 const Discord = require('discord.js');
 const cheerio = require("cheerio");
-const axios = require("axios");
+const getHtml = require("../modules/getHtml");
 
 const {getUserInfo, createCharacterCard} = require("../modules/getUserInfo");
 
 const maple_gg_user = 'https://maple.gg/u/';
-const getHtml = async (url) => {
-  try {
-    return await axios.get(url, {
-        responseEncoding : 'binary',
-        responseType : 'arraybuffer'
-      }
-    );
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const info = async (msg, cluster, userName) => {
   if (!userName) {
