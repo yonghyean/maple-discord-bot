@@ -39,6 +39,7 @@ const puppeteerOptions = process.platform === 'win32' ? undefined : {
 
   client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setActivity('!help, 뭘봐', { type: 'WATCHING' })
   });
   
   client.on('message', async (msg) => {
