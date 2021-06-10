@@ -1,78 +1,80 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const data = require("./data.json");
-const hunting = require("./hunting.json");
-const axios = require("axios");
-const cheerio = require("cheerio");
-const nodeHtmlToImage = require('node-html-to-image')
+const { Cluster } = require("puppeteer-cluster");
 
-const maple_gg_user = 'https://maple.gg/u/';
-const getHtml = async (url) => {
-  try {
-    return await axios.get(url, {
-        responseEncoding : 'binary',
-        responseType : 'arraybuffer'
-      }
-    );
-  } catch (error) {
-    console.error(error);
-  }
+const {
+  help,
+  info,
+  hunting,
+  news,
+  eventAndCash
+} = require("./messages");
+
+const secret = require("./data.json");
+
+const puppeteerOptions = process.platform === 'win32' ? undefined : {
+  executablePath: "chromium-browser", 
+  args: ["--no-sandbox", "--disable-setuid-sandbox"],
 };
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
+(async () => {
+  const cluster = await Cluster.launch({
+    concurrency: Cluster.CONCURRENCY_CONTEXT,
+    maxConcurrency: 6,
+    puppeteerOptions,
+  });
 
-client.on('message', async (msg) => {
-  if (msg.content[0] !== '!') return;
-  const [message, info] = msg.content.slice(1).split(' ');
-  switch (message) {
-    case 'help':
-    case '도움말':
-      const embed = new Discord.MessageEmbed();
-      embed.setTitle("도움말 입니다.");
-      embed.setDescription("상우봇은 메이플스토리 리부트 서버 위주로 알려줍니다.");
-      embed.fields = [
-        { name: "!도움말/!help", value: "도움말을 알려줍니다.", inline: false},
-        { name: "!정보 (캐릭터 이름)", value: "캐릭터 정보를 알려줍니다.", inline: false},
-        { name: "!사냥터", value: "사냥터 정보를 알려줍니다.", inline: false},
-      ]
-      msg.channel.send(embed);
-      break;
-    case '정보':
-      if (!info) {
-        msg.channel.send(`
-        > 닉네임을 입력해주세요.
-      `);
-        return;
+  await cluster.task(async ({ page, data: html, worker }) => {
+    console.time("screenshot" + worker.id);
+    await page.setContent(html);
+    const body = await page.$("body");
+    const screen = await body.screenshot({
+      quality: 100,
+      type: 'jpeg',
+      encoding: 'buffer',
+    });
+    console.timeEnd("screenshot" + worker.id);
+    return screen;
+  });
+
+  client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setActivity('!help, 뭘봐', { type: 'WATCHING' })
+  });
+  
+  client.on('message', async (msg) => {
+    if (msg.content[0] !== '!') return;
+    const [message, data] = msg.content.slice(1).split(' ');
+    switch (message) {
+      case 'help':
+      case '도움말':
+        help(msg);
+        break;
+      case '정보':
+        await info(msg, cluster, data);
+        break; 
+      case "사냥터": {
+        hunting(msg);
+        break;
       }
-      const data = await getHtml(maple_gg_user + encodeURI(info));
-      const $ = cheerio.load(data.data, {decodeEntities: true});
-      const h3 = $("section.container > h3");
-        if (h3 && h3.text().indexOf('검색결과가 없습니다.') !== -1) {
-          msg.reply(`
-          > 검색결과가 없습니다.
-          `);
-        } else {
-          // TODO 캐릭터 정보 꾸미기
-          const characterCardHtml = $('#character-card').html();
-          const image = await nodeHtmlToImage({
-            html: characterCardHtml,
-            puppeteerArgs: {executablePath: "chromium-browser", args: ["--no-sandbox", "--disable-setuid-sandbox"]},
-          });
-          const discordSendImage = new Discord.MessageAttachment(image);
-          msg.channel.send(discordSendImage);
-        }
-      break; 
-    case "사냥터": {
-      const huntingData = hunting.data;
-      const fields = huntingData.map((d) => ({ name: d.level, value: d.desc, inline: false}));
-      const embed = new Discord.MessageEmbed();
-      embed.fields = fields
-      msg.channel.send(embed);
-      break;
+      case "공지": {
+        const type = data === '공지' ? 'Notice' : data === '점검' ? 'Inspection' : data === 'GM' ? 'GMDiary' : 'All';
+        await news.news(msg, type);
+        break;
+      }
+      case "업데이트": {
+        await news.update(msg);
+        break;
+      }
+      case "이벤트": 
+      case "캐시": {
+        const type = message === '이벤트' ? 'Event' : 'CashShop'; 
+        await eventAndCash(msg, type);
+        break;
+      }
+      
     }
-  }
-});
-
-client.login(data.token);
+  });
+  
+  client.login(secret.token);
+})();
